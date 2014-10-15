@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.Graphics;
 
 /* Cette classe définit le monde, il s'agit en fait de l'ensemble des noeuds (destinations possibles) qui le constituent. */
 
@@ -45,14 +44,6 @@ public class Graphe {
     public static int nombreDestinations(){
         return destinations.size();
     }
-    
-	public void dessiner(Graphics g) 
-	{
-		for(int i=0; i < nombreDestinations(); i++)
-		{
-		g.drawRect(getNoeud(i).getCoordX(),getNoeud(i).getCoordY(),5,5);
-		}
-	}
 
 	public Iterator<Noeud> iterator()
 	{
@@ -78,3 +69,4 @@ public class Graphe {
         return it;
 	}
 }
+
