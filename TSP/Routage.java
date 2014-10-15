@@ -5,10 +5,10 @@ import java.util.Collections;
 
 public class Routage{
 	  // Parcours de l'homme d'affaire
-    public ArrayList<Noeud> route = new ArrayList<Noeud>();
+    public ArrayList<Noeud> route = new ArrayList<Noeud>(); // NE PAS METTRE EN STATIC
     private int distance = 0;
     
-    // Construit une route fantôme
+    // Construit une route fantÃ´me
     public Routage(){
         for (int i = 0; i < Graphe.nombreDestinations(); i++) {
             route.add(null);
@@ -19,36 +19,36 @@ public class Routage{
     {
     	route.clear();
     }
-    // Construit une route à partir d'un autre
-    @SuppressWarnings("unchecked") // Oui ça m'énervait... Si quelqu'un réussit à le supprimer je suis preneur
+    // Construit une route Ã  partir d'un autre
+    @SuppressWarnings("unchecked") // Oui Ã§a m'Ã©nervait... Si quelqu'un rÃ©ussit Ã  le supprimer je suis preneur
 	public Routage(ArrayList<Noeud> route){
         this.route = (ArrayList<Noeud>) route.clone();
     }
     
-    // Renvoie la route empruntée
+    // Renvoie la route empruntÃ©e
     public ArrayList<Noeud> getRoute(){
         return route;
     }
 
-    // Récupérer un noeud de la route
+    // RÃ©cupÃ©rer un noeud de la route
     public Noeud getNoeud(int position) {
         return route.get(position);
     }
 
-    // Placer un noeud à une certaine position de la route
+    // Placer un noeud Ã  une certaine position de la route
     public void setNoeud(int position, Noeud noeud) {
         route.set(position, noeud);
-        // On a modifié la route. Pour le moment on reset la distance et on recalcule tout :-(
-        distance = 0; // à modifier avec une matrice des distances !
+        // On a modifiÃ© la route. Pour le moment on reset la distance et on recalcule tout :-(
+        distance = 0; // Ã  modifier avec une matrice des distances !
     }
     
-    // Crée une route aléatoire
+    // CrÃ©e une route alÃ©atoire
     public void routeAleatoire() {
         // Ajouter toutes les destinations possibles au parcours
         for (int index = 0; index < Graphe.nombreDestinations(); index++) {
           setNoeud(index, Graphe.getNoeud(index));
         }
-        // réorganise aléatoirement l'ordre de visite
+        // rÃ©organise alÃ©atoirement l'ordre de visite
         Collections.shuffle(route);
     }
 
@@ -62,7 +62,7 @@ public class Routage{
                 Noeud noeudDepart = getNoeud(index);
                 // Noeud auquel on arrive
                 Noeud noeudArrivee;
-                // On vérifie si le noeud suivant est le noeud de départ (la boucle est bouclé)
+                // On vÃ©rifie si le noeud suivant est le noeud de dÃ©part (la boucle est bouclÃ©)
                 // si non
                 if(index+1 < tailleRoute()){
                     noeudArrivee = getNoeud(index+1);
@@ -93,7 +93,7 @@ public class Routage{
         return geneString;
     }
     
-    // Représente le parcours
+    // ReprÃ©sente le parcours
 	public void dessiner(Graphics g) 
 	{
 		for (int index=0; index < tailleRoute(); index++) {
@@ -101,7 +101,7 @@ public class Routage{
             Noeud noeudDepart = getNoeud(index);
             // Noeud auquel on arrive
             Noeud noeudArrivee;
-            // On vérifie si le noeud suivant est le noeud de départ (la boucle est bouclé)
+            // On verifie si le noeud suivant est le noeud de depart (la boucle est bouclee)
             // si non
             if(index+1 < tailleRoute()){
                 noeudArrivee = getNoeud(index+1);
@@ -115,3 +115,4 @@ public class Routage{
         }
 	}
 }
+
