@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import java.io.*;
+
 import java.util.Iterator;
 
 public class ZoneDessin extends JPanel implements ActionListener, MouseListener {
@@ -22,7 +24,12 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 	private Routage solution = new Routage();
 	// private Vector<Noeud> noeuds;
 	private Graphe graphe = new Graphe();
-
+    public static int limiteX1 = 0;
+    public static int limiteY1 = 0;
+    public static int limiteX2 = 500;
+    public static int limiteY2 = 500;
+    static int limiteCourante = 0;
+    
 	// Crée la zone de dessin
 	public ZoneDessin() {
 		super();
@@ -43,8 +50,9 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 		String cmd = e.getActionCommand();
 		if (cmd.equals("Solution")) {
 			System.out.println("Recherche en cours...");
-			Recuit.resetRecuit();
-			solution = Recuit.solution();
+			Recuit.reset();
+			try { solution = Recuit.solution(); }
+			catch (IOException e1) {e1.printStackTrace();}
 			return;
 		}
 		if (cmd.equals("Apocatastase")) {
@@ -57,6 +65,31 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 			Graphe.mondeAleatoire(50);
 			return;
 		}
+		if (cmd.equals("Charger monde")) {
+			IOtxt.Charger();
+			return;
+		}
+		if (cmd.equals("Lire solution")) {
+			System.out.println("ecriture");
+				IOtxt.Lire();
+				return;
+		}
+		if (cmd.equals("Affiner la solution")) {
+			System.out.println("ecriture");
+				try {
+					solution = Recuit.solution();
+					//solution = Recuit.affinerSolution(IOtxt.Lire());
+					repaint();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				return;
+		}
+		if (cmd.equals("Parametres")) {
+			Recuit.parametrage();
+				return;
+		}
 	}
 	
 	// dessine les noeuds et le graphe.
@@ -65,7 +98,8 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 		java.awt.Rectangle r = g.getClipBounds();
 		((Graphics2D) g).setBackground(Color.white);
 		g.clearRect(r.x, r.y, r.width, r.height);
-	
+	    g.fillOval(limiteX1 - 3, limiteY1 - 3, 6, 6);
+	    g.fillOval(limiteX2 - 3, limiteY2 - 3, 6, 6);
 		while (it.hasNext()) {
 			Noeud fig = (Noeud) it.next();
 			fig.dessiner(g);
@@ -85,6 +119,23 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 	    	Graphe.ajouterNoeud(noeud);
 			System.out.println("La ville " + Graphe.nombreDestinations()+ " a été créée aux coordonnées ("+noeud.getCoordX()+", "+noeud.getCoordY()+")");
 	    }
+	    else if(buttonDown == MouseEvent.BUTTON2) 
+	    {
+	    	int x = e.getX(), y = e.getY();
+	    	if(limiteCourante == 0)
+	    	{
+	    		limiteX1 = x;
+	    		limiteY1 = y;
+	    		limiteCourante = 1;
+	    	}
+	    	else if(limiteCourante == 1)
+	    	{
+	    		limiteX2 = x;
+	    		limiteY2 = y;
+	    		limiteCourante = 0;
+	    	}
+	    	repaint();
+	    }
 	    else if(buttonDown == MouseEvent.BUTTON3) 
 	    {
 	    	   int x = e.getX(), y = e.getY();
@@ -96,8 +147,9 @@ public class ZoneDessin extends JPanel implements ActionListener, MouseListener 
 	        	   if(coordX - 6 <= x && x <= coordX + 6 && coordY - 6 <= y && y <= coordY + 6)
 	        	   {
 	        		   Graphe.supprimerNoeud(noeudConsidere);
-	        		   Recuit.resetRecuit();
-	       			   solution = Recuit.solution();
+	        		   //Recuit.resetRecuit();
+	       			   try {Recuit.reset(); solution = Recuit.solution(); }
+					  catch (IOException e1) {e1.printStackTrace();}
 	        	   }
 	           }
 	    }
