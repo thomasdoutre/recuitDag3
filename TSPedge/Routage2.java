@@ -103,9 +103,9 @@ public class Routage2 {
 		}
 		i = randIndex1;
 		j = randIndex2;
-		while !(i==j || getNextIndex(i)==j) {
-			tempi=getNextIndex(i);
-			tempj=getPreviousIndex(j);
+		while (!(i==j || getNext(i)==j)) {
+			tempi=getNext(i);
+			tempj=getPrevious(j);
 			swap(i,j);
 			i=tempi;
 			j=tempj;
