@@ -94,24 +94,21 @@ public class Routage2 {
 		int randIndex2 = 0;
 		int i;
 		int j;
+		int tempi;
+		int tempj;
 		// On choisit deux positions différentes du parcours au hasard et on les échange. Notons que le cas c2=c1' ne change pas la route et que le cas c1=c1' n'a aucun sens.
 		while (randIndex1 == randIndex2 || getPreviousIndex(randIndex1)==randIndex2){
 			randIndex1 = (int) (tailleRoute() * Math.random());
 			randIndex2 = (int) (tailleRoute() * Math.random());
 		}
-		
-		if(randIndex1>randIndex2){
-			i = randIndex2;
-			j = randIndex1;		
-		}
-		else{
-			i = randIndex1;
-			j = randIndex2;
-		}
-		while(i<j){
-	    swap(i,j);
-		i++;
-		j--;
+		i = randIndex1;
+		j = randIndex2;
+		while !(i==j || getNextIndex(i)==j) {
+			tempi=getNextIndex(i);
+			tempj=getPreviousIndex(j);
+			swap(i,j);
+			i=tempi;
+			j=tempj;
 		}
 	}
 
