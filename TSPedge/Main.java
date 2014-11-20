@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.*
 ;class Main{
-	static int N =100;
+	static int N =20;
 	public static Double X = 0.0;
 	public static Double Y = 0.0;
 	private static BufferedReader br;
@@ -17,14 +17,18 @@ import java.io.*
 		boolean upper = false;
 		System.out.println("lecture en cours");
 		try {
-			File fichier = new File("C:/Users/Alain/workspace/TSPedge/pr1002.tsp");
+			File fichier = new File("C:/minlocalbis.txt");
 			Scanner scanner = new Scanner(fichier);
+			int k=1;
 			while (true)
 			{
 				try
 				{
-					numero = scanner.nextInt();
-					X = scanner.nextDouble();
+					numero = k;
+					k+=1;
+// Ici, deux tests sont possible : un sur des benchmarks ayant pour entrée les coordonnées des villes, l'autre sur des graphes définis par les matrices d'adjacence. 					
+// A partir de maintenant, test pour gros graphes (Exemple brazil58) 
+					/*X = scanner.nextDouble();
 					Y = scanner.nextDouble();
 					coordX.add(X);
 					coordY.add(Y);
@@ -35,18 +39,44 @@ import java.io.*
 					break;
 				}
 			}
-			System.out.println(coordX.get(100));
-			double[][] matrice = new double[1002][1002];
-			for (int i=1;i<=1002;i++)
+			double[][] matrice = new double[58][58];
+			for (int i=1;i<=58;i++)
 			{
-				for (int j=i+1; j<=1002;j++)
+				for (int j=i+1; j<=58;j++)
 				{
 					matrice[i-1][j-1] = Math.sqrt((coordX.get(i-1)-coordX.get(j-1))*(coordX.get(i-1)-coordX.get(j-1)) + (coordY.get(i-1)-coordY.get(j-1))*(coordY.get(i-1)-coordY.get(j-1)));
 					matrice[j-1][i-1] = matrice[i-1][j-1];
 				}
-			}		
+			}	*/
+	//Fin test gros graphes	avec coordonnées			
+	// Début Test d'une matrice 5x5 (Exemple de Pierre-Alain ou celui de Pierre)				
+					
+					X = scanner.nextDouble();
+					coordX.add(X);
+					System.out.println("Le coefficient numero "+numero+" de valeur "+X+" a ete charge");
+					}
+					catch(NoSuchElementException exception)
+					{
+						break;
+					}
+			}
+					double[][] matrice = new double[5][5];
+					for (int i=1;i<=5;i++)
+					{
+						for (int j=1; j<=5;j++)
+						{
+							matrice[i-1][j-1] = coordX.get((5*(i-1))+(j-1));
+						}
+					}
+			//Fin test
 			Graphe g = new Graphe(matrice);
-			Routage2 route = new Routage2(g);
+			ArrayList<Integer> tab_min = new ArrayList<Integer>();
+			tab_min.add(0);
+			tab_min.add(1);
+			tab_min.add(2);
+			tab_min.add(3);
+			tab_min.add(4);
+			Routage2 route = new Routage2(g,tab_min);
 			ArrayList<Integer> l = route.getRoute();
 			try
 			{
@@ -67,3 +97,4 @@ import java.io.*
 			System.err.println("nombre invalide...");
 		}
 	}
+}

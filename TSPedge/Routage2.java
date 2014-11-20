@@ -41,15 +41,24 @@ public class Routage2 {
 	public Graphe getGraphe(){
 		return this.g;
 	}
+	// En entrée, un indice correspondant à la place d'un élément sur une route. En sortie, le noeud correspondant à l'indice suivant
 	public int getNext(int index){
 		if (index==this.tailleRoute()-1) {
 			return this.getRoute().get(0);
 		} else {
-			int b= this.getRoute().get(index+1);
-			return b;
-			
-		}
+			return this.getRoute().get(index+1);
+			}
 	}
+	//En entrée, un indice correspondant à la place d'un élément sur une route. En sortie, l'indice correspondant au noeud suivant(dans la plupart des cas, on ajoute simplement 1)
+	public int getNextIndex(int index){
+		if (index==(this.tailleRoute()-1)) {
+			return 0;
+		} else {
+			return (index+1);
+			}
+	}
+	
+	// En entrée, un indice correspondant à la place d'un élément sur une route. En sortie, le noeud correspondant à l'indice précédent
 	public int getPrevious(int index){
 		if (index==0) {
 			return  this.getRoute().get(this.tailleRoute() - 1);
@@ -57,11 +66,13 @@ public class Routage2 {
 			return  this.getRoute().get(index-1);
 		}
 	}
+	
+	// En entrée, un indice correspondant à la place d'un élément sur une route. En sortie, l'indice du noeud précédent(en général, on soustrait 1)
 	public int getPreviousIndex(int index){
 		if (index==0) {
-			return this.tailleRoute() - 1;
+			return  (this.tailleRoute() - 1);
 		} else {
-			return index-1;
+			return (index-1);
 		}
 	}
 		public ArrayList<Integer> getRoute(){
@@ -76,10 +87,12 @@ public class Routage2 {
 			int n = g.nombreDeNoeuds();
 			String s = "";
 			for (int index = 0; index < n; index++){
-				s += route.get(index).intValue() + "("+ g.longueurEntre(route.get(index),getPrevious(index)) + ")"+ "->";
+				s += route.get(index).intValue() + "("+ g.longueurEntre(route.get(index),getPreviousIndex(index)) + ")"+ "->";
 			}
 			return s;
 		}
+		
+	//Echange deux élements d'une route. Les entrées sont les indices correspondants aux noeuds
 	public void swap(int i, int j){
 		Collections.swap(route,i,j);
 	}
@@ -90,25 +103,22 @@ public class Routage2 {
 	// en theorie une classe mutations devrait etre plus adaptÃ©e a notre solution rigide
 	
 	public void twoOptMove() {
-		int randIndex1 = 0;
-		int randIndex2 = 0;
+		int randIndex1 = 0;//Indice du noeud c2
+		int randIndex2 = 0;//Indice du noeud c1'
 		int i;
 		int j;
-		int tempi;
-		int tempj;
-		// On choisit deux positions diffÃ©rentes du parcours au hasard et on les Ã©change. Notons que le cas c2=c1' ne change pas la route et que le cas c1=c1' n'a aucun sens.
-		while (randIndex1 == randIndex2 || getPreviousIndex(randIndex1)==randIndex2){
-			randIndex1 = (int) (tailleRoute() * Math.random());
-			randIndex2 = (int) (tailleRoute() * Math.random());
+		//  On recalcule les indices de c2 et c1' jusqu'à ce que c2 soit différent de c1'.Notons que le cas c2=c1' ne change pas la route.
+		while (randIndex1 == randIndex2){
+			randIndex1 = (int) (tailleRoute() * Math.random()); //c1'
+			randIndex2 = (int) (tailleRoute() * Math.random()); //c2
 		}
 		i = randIndex1;
 		j = randIndex2;
-		while (!(i==j || getNext(i)==j)) {
-			tempi=getNext(i);
-			tempj=getPrevious(j);
+		//On itère ensuite pour effectuer tous les échanges du txoOptMove
+		while (i!=j && getNextIndex(i)!=j ) {
 			swap(i,j);
-			i=tempi;
-			j=tempj;
+			i=getNextIndex(i);
+			j=getPreviousIndex(j);
 		}
 	}
 
@@ -117,8 +127,8 @@ public class Routage2 {
 		int j=0;
 		int L = this.tailleRoute();
 		for(int i=0;i<L;i++){
-			j=this.getNext((i));
-			cpt+=this.getGraphe().getdists()[this.getRoute().get(i)][j];
+			j=this.getNextIndex(i);
+			cpt+=this.getGraphe().getdists()[this.getRoute().get(i)][this.getRoute().get(j)];
 			
 		}//on prend quand meme en consideration la distance dernier -> premier
 

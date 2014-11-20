@@ -12,7 +12,7 @@ public class Recuit extends JFrame
 	private static final long serialVersionUID = 2L;
 	static double temperature = 1000;
 	static double refroidissement = 0.0001;
-	static double K = 0;
+	static double K = 1;
 	static int nbTours = 1;
 	public static ArrayList<Double> DeltaE = new ArrayList<Double>();
 
@@ -31,7 +31,6 @@ public class Recuit extends JFrame
 		saveProba((double)Math.round((Math.exp((energieCourante - energieNouvelle) / (K*temperature))) * 10000) / 10000,sortie);
 		return Math.exp((energieCourante - energieNouvelle) / (K*temperature));
 	}
-
 	public static Routage2 solution(Graphe g,ArrayList<Integer> liste,PrintWriter sortie) throws IOException, InterruptedException
 	{
 		// On définit une route aléatoire en premier lieu
@@ -75,6 +74,7 @@ public class Recuit extends JFrame
 		printProba.close();
 		// Lorsque l'énergie cinétique n'est plus suffisante, on s'arrête et on affiche la solution trouvée
 		return meilleureRoute;
+		
 
 
 
@@ -89,3 +89,4 @@ public class Recuit extends JFrame
 	    	sortie.println(proba+",");
 	    }
 }
+
